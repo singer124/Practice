@@ -3,12 +3,13 @@ writer = "P1"
 player = "P2"
 point1 = 0
 point2 = 0
+valid_letters = 'abcdefghijklmnopqrstuvwxyz'
 while point1+point2 < 5:
     l = 0
     guessed_letters = []
-    print("Player 1 Points: "+str(point1),"Player 2 Points: " +str(point2))    
+    print("Player 1 Points: "+str(point1),"\tPlayer 2 Points: " +str(point2))    
     print(writer+ ", Enter word for " + player +" to guess")
-    final_word = input("")
+    final_word = input("").lower()
     print("\n\n\n\n\n\n\n\n\n\n\nWord Hidden")
     word = []
     idx_array = []
@@ -21,14 +22,18 @@ while point1+point2 < 5:
     for x in final_word:
         word.append(x)
     temp = False
+    print(*placeholder)
     while temp is False and i < 6:
         print(player + ", Guess a letter")
-        letter = input()
+        letter = input().lower()
         if letter in guessed_letters:
             print("Already Guessed Letter")
             continue
         if len(letter) != 1:
             print("Incorrect Format (Try inputting only 1 letter)")
+            continue
+        if letter not in valid_letters:
+            print("Invalid Character")
             continue
         guessed_letters.append(letter)
         flag = False
@@ -39,9 +44,10 @@ while point1+point2 < 5:
         if flag == False:
             i +=1
         print(*placeholder)
+        print(f"{i}/6 Incorrect Guesses")
         temp = numpy.array_equiv(word, placeholder)
     if i == 6:
-        print(writer +" Wins Round!")
+        print(f"Word was {final_word}\n"+writer +" Wins Round!")
         if writer == "P1":
             point1 += 1
         else:
@@ -52,11 +58,9 @@ while point1+point2 < 5:
             point2 += 1
         else:
             point1 += 1
+    temp = writer
     writer = player
-    if writer == "P1":
-        player = "P2"
-    else:
-        player = "P1"
+    player = temp
 if point1 > point2:
     print("P1 Wins Game!")
 else:
